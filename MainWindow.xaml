@@ -1,8 +1,60 @@
 ﻿<Window x:Class="Model_View_ViewModel_Example.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        Title="Model-View-ViewModel Example" Height="350" Width="525">
+	<Window.Resources>
+		<DataTemplate DataType="{x:Type ValidationError}">
+			<Popup>
+			<TextBlock 
+          FontStyle="Italic"
+          Foreground="Red"
+          HorizontalAlignment="Right"
+          Margin="0,1"
+          Text="{Binding Path=ErrorContent}" 
+          />
+			</Popup>
+		</DataTemplate>
+	</Window.Resources>
+	
+	<DockPanel>
+		<ToolBar DockPanel.Dock="Top">
+			<Button Name="_btnToolbarMoveUp" Command="{Binding MoveUpCommand}" Height="20">
+				Up
+			</Button>
+			<Button Name="_btnToolbarMoveDown" Command="{Binding MoveDownCommand}" Height="20">
+				Down
+			</Button>
+		</ToolBar>
+		<ListView SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding Employees}">
+			<ListView.ContextMenu>
+				<ContextMenu>
+					<MenuItem Header="Move Up" Command="{Binding MoveUpCommand}" />
+					<MenuItem Header="Move Down" Command="{Binding MoveDownCommand}" />
+				</ContextMenu>
+			</ListView.ContextMenu>
+			<ListView.ItemContainerStyle>
+				<Style TargetType="ListViewItem">
+					<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+				</Style>
+			</ListView.ItemContainerStyle>
+			<ListView.View>
+				<GridView>
+					<GridViewColumn Header="First Name">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<TextBox Text="{Binding FirstName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus, NotifyOnValidationError=True}" Validation.ErrorTemplate="{x:Null}"/>
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn Header="Last Name">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<TextBox Text="{Binding LastName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}"/>
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+				</GridView>
+			</ListView.View>
+		</ListView>
+	</DockPanel>
 </Window>

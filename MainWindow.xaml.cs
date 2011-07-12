@@ -22,6 +22,7 @@ namespace Model_View_ViewModel_Example
 		public MainWindow()
 		{
 			InitializeComponent();
+			this.DataContext = new EmployeeListViewModel();
 		}
 	}
 }
